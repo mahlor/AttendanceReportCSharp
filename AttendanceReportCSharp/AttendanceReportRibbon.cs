@@ -59,52 +59,25 @@ namespace AttendanceReportCSharp
                 CheckPathExists = true,
                 Filter = "Excel files (*.xls; *.xlsx)|*.xls;*.xlsx",
                 RestoreDirectory = true,
-
+                InitialDirectory = "C:\\Users\\mahlo\\Downloads",
                 ReadOnlyChecked = true,
                 ShowReadOnly = true
             };
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                Excel.Worksheet currentWS = (Excel.Worksheet)Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet;
+                //Excel.Worksheet currentWS = (Excel.Worksheet)Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet;
 
-                var writeRange = currentWS.Range["A2"];
-                writeRange.Value = openFileDialog1.FileName;
+                Excel.Workbook doorWB = Globals.ThisWorkbook.Application.Workbooks.Open(openFileDialog1.FileName, true, true);
+                Excel.Worksheet doorSheet1 = doorWB.Worksheets[1];
 
+                    doorSheet1.Copy(Globals.ThisWorkbook.Worksheets[1]);
+                Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
+                newDoorSheet.Name = "Door Report";
+                doorWB.Close(false);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                //                var writeRange = currentWS.Range["A2"];
+                //writeRange.Value = openFileDialog1.FileName;
 
 
             }
