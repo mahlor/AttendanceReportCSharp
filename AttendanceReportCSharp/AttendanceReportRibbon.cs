@@ -12,6 +12,8 @@ namespace AttendanceReportCSharp
     public partial class AttendanceReportRibbon
     {
         ActionsPaneControl1 actionsPane1 = new ActionsPaneControl1();
+        int numOpened = 0;
+        int deDupped = 0;
         private void AttendanceReportRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             Globals.ThisWorkbook.ActionsPane.Controls.Add(actionsPane1);
@@ -35,10 +37,6 @@ namespace AttendanceReportCSharp
 
         }
 
-        private void buttonRemoveDups_Click(object sender, RibbonControlEventArgs e)
-        {
-
-        }
         private void buttonOpenDoor_Click(object sender, RibbonControlEventArgs e)
         {
             BrowseButton_Click(sender, e);
@@ -51,6 +49,7 @@ namespace AttendanceReportCSharp
         }
         private void BrowseButton_Click(object sender, RibbonControlEventArgs e)
         {
+
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
 
@@ -66,6 +65,7 @@ namespace AttendanceReportCSharp
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                numOpened++;
                 //Excel.Worksheet currentWS = (Excel.Worksheet)Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet;
 
                 Excel.Workbook doorWB = Globals.ThisWorkbook.Application.Workbooks.Open(openFileDialog1.FileName, true, true);
@@ -73,30 +73,76 @@ namespace AttendanceReportCSharp
 
                 doorSheet1.Copy(Globals.ThisWorkbook.Worksheets[1]);
                 doorWB.Close(false);
-                Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
-                newDoorSheet.Name = "Door Report";
-                newDoorSheet.Copy(Globals.ThisWorkbook.Worksheets[1]);
-                Excel.Worksheet removeDupsSheet = Globals.ThisWorkbook.Worksheets[1];
-                removeDupsSheet.Name = "Remove Dups";
-                removeDupsSheet.Range["A1:A6"].EntireRow.Delete();
-                removeDupsSheet.Range["A1"].EntireColumn.Delete();
-                removeDupsSheet.Range["B1:F1"].EntireColumn.Delete();
-                removeDupsSheet.Range["C1:G1"].EntireColumn.Delete();
-                Excel.Range lastRow = removeDupsSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
-                int lastUsedRow = lastRow.Row;
-                for (int r = 1; r < lastUsedRow - 1; r++)
-                {
-                    String name = removeDupsSheet.Cells[r, 2].Value;
-                    if (name != null) {
-                        name = name.ToLower();
-                    }
-                    removeDupsSheet.Range["C" + r].Value = name;
-                }
-                removeDupsSheet.Range["B1"].EntireColumn.Delete();
-
             }
         }
+        private void buttonRemoveDups_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (deDupped == 1) return;
+            Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
+            newDoorSheet.Name = "Door Report" + numOpened.ToString();
+            newDoorSheet.Copy(Globals.ThisWorkbook.Worksheets[1]);
+            Excel.Worksheet removeDupsSheet = Globals.ThisWorkbook.Worksheets[1];
+            removeDupsSheet.Name = "Remove Dups" + numOpened.ToString();
+            removeDupsSheet.Range["A1:A6"].EntireRow.Delete();
+            removeDupsSheet.Range["A1"].EntireColumn.Delete();
+            removeDupsSheet.Range["B1:F1"].EntireColumn.Delete();
+            removeDupsSheet.Range["C1:G1"].EntireColumn.Delete();
+            Excel.Range lastRow = removeDupsSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
+            int lastUsedRow = lastRow.Row;
+            for (int r = 1; r < lastUsedRow - 1; r++)
+            {
+                String name = removeDupsSheet.Cells[r, 2].Value;
+                String dateStr = removeDupsSheet.Cells[r, 1].Value;
+                if (name != null)
+                {
+                    name = name.ToLower();
+                }
+                if (dateStr != null)
+                {
+                    dateStr = dateStr.Split(' ')[0];
+                }
+                removeDupsSheet.Range["C" + r].Value2 = dateStr;
+                removeDupsSheet.Range["D" + r].Value2 = name;
+            }
+            removeDupsSheet.Range["A1:B1"].EntireColumn.Delete();
 
+
+            DateTime dateMatch = removeDupsSheet.Cells[1, 1].Value;
+            DateTime dateOrg;
+            var names = new List<(DateTime dateList, string nameList)> { };
+            HashSet<String> nameHash = new HashSet<string>();
+            for (int r = 1; r < lastUsedRow - 1; r++)
+            {
+                if (removeDupsSheet.Cells[r,1].Value != null)
+                {
+                    dateOrg = removeDupsSheet.Cells[r, 1].Value;
+                    if (dateOrg != dateMatch)
+                    {
+
+                        foreach( String name in nameHash) {
+                            names.Add((dateMatch, name));
+                            
+                        }
+                        dateMatch = dateOrg;
+                        nameHash.Clear();
+                    }
+                    else {
+                        nameHash.Add(removeDupsSheet.Cells[r, 2].value);
+                    }
+                }
+            }
+            for (int s = 1, t=0; t < names.Count; s++, t++)
+            {
+                removeDupsSheet.Range["C" + s].Value = names[t].dateList;
+                removeDupsSheet.Range["D" + s].Value = names[t].nameList;
+
+            }
+            removeDupsSheet.Range["A1:B1"].EntireColumn.Delete();
+            deDupped = 1;
+
+
+        }
+        
         private void button3_Click(object sender, RibbonControlEventArgs e)
         {
 
