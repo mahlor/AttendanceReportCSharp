@@ -82,11 +82,17 @@ namespace AttendanceReportCSharp
                 removeDupsSheet.Range["A1"].EntireColumn.Delete();
                 removeDupsSheet.Range["B1:F1"].EntireColumn.Delete();
                 removeDupsSheet.Range["C1:G1"].EntireColumn.Delete();
-
-
-                //                var writeRange = currentWS.Range["A2"];
-                //writeRange.Value = openFileDialog1.FileName;
-
+                Excel.Range lastRow = removeDupsSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
+                int lastUsedRow = lastRow.Row;
+                for (int r = 1; r < lastUsedRow - 1; r++)
+                {
+                    String name = removeDupsSheet.Cells[r, 2].Value;
+                    if (name != null) {
+                        name = name.ToLower();
+                    }
+                    removeDupsSheet.Range["C" + r].Value = name;
+                }
+                removeDupsSheet.Range["B1"].EntireColumn.Delete();
 
             }
         }
