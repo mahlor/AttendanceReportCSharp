@@ -71,10 +71,18 @@ namespace AttendanceReportCSharp
                 Excel.Workbook doorWB = Globals.ThisWorkbook.Application.Workbooks.Open(openFileDialog1.FileName, true, true);
                 Excel.Worksheet doorSheet1 = doorWB.Worksheets[1];
 
-                    doorSheet1.Copy(Globals.ThisWorkbook.Worksheets[1]);
+                doorSheet1.Copy(Globals.ThisWorkbook.Worksheets[1]);
+                doorWB.Close(false);
                 Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
                 newDoorSheet.Name = "Door Report";
-                doorWB.Close(false);
+                newDoorSheet.Copy(Globals.ThisWorkbook.Worksheets[1]);
+                Excel.Worksheet removeDupsSheet = Globals.ThisWorkbook.Worksheets[1];
+                removeDupsSheet.Name = "Remove Dups";
+                removeDupsSheet.Range["A1:A6"].EntireRow.Delete();
+                removeDupsSheet.Range["A1"].EntireColumn.Delete();
+                removeDupsSheet.Range["B1:F1"].EntireColumn.Delete();
+                removeDupsSheet.Range["C1:G1"].EntireColumn.Delete();
+
 
                 //                var writeRange = currentWS.Range["A2"];
                 //writeRange.Value = openFileDialog1.FileName;

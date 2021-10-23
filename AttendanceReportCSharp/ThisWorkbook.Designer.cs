@@ -216,6 +216,8 @@ namespace AttendanceReportCSharp {
                 return _ThisRibbonCollection;
             }
         }
+
+        public static object Thisworkbook { get; internal set; }
     }
     
     /// 
