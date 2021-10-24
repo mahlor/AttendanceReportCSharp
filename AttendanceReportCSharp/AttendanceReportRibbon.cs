@@ -13,10 +13,11 @@ namespace AttendanceReportCSharp
     {
 
         int numOpened = 0;
+        ActionsPaneControl1 actionsPane1 = new ActionsPaneControl1();
         private void AttendanceReportRibbon_Load(object sender, RibbonUIEventArgs e)
         {
 
-            ActionsPaneControl1 actionsPane1 = new ActionsPaneControl1();
+
             Globals.ThisWorkbook.ActionsPane.Controls.Add(actionsPane1);
             Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = false;
 
@@ -50,6 +51,7 @@ namespace AttendanceReportCSharp
         private void BrowseButton_Click(object sender, RibbonControlEventArgs e)
         {
 
+
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
 
@@ -66,7 +68,8 @@ namespace AttendanceReportCSharp
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 //Excel.Worksheet currentWS = (Excel.Worksheet)Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet;
-
+                CheckedListBox listbox = (CheckedListBox)actionsPane1.Controls["nameListAP"];
+                listbox.Items.Clear();
                 Excel.Workbook doorWB = Globals.ThisWorkbook.Application.Workbooks.Open(openFileDialog1.FileName, true, true);
                 Excel.Worksheet doorSheet1 = doorWB.Worksheets[1];
 
@@ -76,6 +79,32 @@ namespace AttendanceReportCSharp
                 Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
                 newDoorSheet.Name = "Door Report" + numOpened.ToString();
                 numOpened++;
+
+                Excel.Range lastRow = newDoorSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
+                int lastUsedRow = lastRow.Row;
+
+                HashSet<String> nameHash = new HashSet<string>();
+                for (int r = 7; r < lastUsedRow; r++)
+                {
+                    String name = newDoorSheet.Cells[r, 8].Value;
+                    if (name != null)
+                    {
+                        name = name.ToLower();
+                        name.Trim();
+                        nameHash.Add(name);
+                    }
+
+                }
+                List<String> nameList = new List<String>(nameHash);
+                nameList.Sort();
+                foreach (var item in nameList)
+                {
+
+                    listbox.Items.Add(item);
+                }
+
+                nameHash.Clear();
+
                 Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = true;
 
 

@@ -49,6 +49,7 @@
             this.nameListAP.Name = "nameListAP";
             this.nameListAP.Size = new System.Drawing.Size(591, 648);
             this.nameListAP.TabIndex = 1;
+            this.nameListAP.SelectedIndexChanged += new System.EventHandler(this.nameListAP_SelectedIndexChanged);
             // 
             // removeDupsAPButton
             // 

@@ -4,8 +4,6 @@ using System.Text;
 using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Windows.Forms;
-
 
 namespace AttendanceReportCSharp
 {
@@ -26,6 +24,13 @@ namespace AttendanceReportCSharp
             Excel.Worksheet activesheet = Globals.ThisWorkbook.Application.ActiveSheet;
             if (activesheet.Name.StartsWith("Remove")) return;
 
+            HashSet<String> nameHash = new HashSet<string>();
+            List<String> exceptions = new List<String>();
+            foreach (String item in nameListAP.CheckedItems)
+            {
+                exceptions.Add(item);
+            }
+
             Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
             newDoorSheet.Copy(Globals.ThisWorkbook.Worksheets[1]);
 
@@ -38,6 +43,7 @@ namespace AttendanceReportCSharp
             removeDupsSheet.Range["C1:G1"].EntireColumn.Delete();
             Excel.Range lastRow = removeDupsSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
             int lastUsedRow = lastRow.Row;
+
             for (int r = 1; r < lastUsedRow - 1; r++)
             {
                 String name = removeDupsSheet.Cells[r, 2].Value;
@@ -55,15 +61,13 @@ namespace AttendanceReportCSharp
             }
             removeDupsSheet.Range["A1:B1"].EntireColumn.Delete();
 
-
             DateTime dateMatch = removeDupsSheet.Cells[1, 1].Value;
             numDays++;
             DateTime dateOrg;
             var names = new List<(DateTime dateList, string nameList)> { };
-            HashSet<String> nameHash = new HashSet<string>();
-            for (int r = 1; r < lastUsedRow - 1; r++)
+            for (int r = 1; r < lastUsedRow; r++)
             {
-                if (removeDupsSheet.Cells[r, 1].Value != null)
+                if (removeDupsSheet.Cells[r, 1].Value != null && removeDupsSheet.Cells[r, 2].Value != null)
                 {
                     dateOrg = removeDupsSheet.Cells[r, 1].Value;
                     if (dateOrg.DayOfWeek != DayOfWeek.Saturday && dateOrg.DayOfWeek != DayOfWeek.Sunday)
@@ -85,7 +89,13 @@ namespace AttendanceReportCSharp
                         }
                         else
                         {
-                            nameHash.Add(removeDupsSheet.Cells[r, 2].value);
+                            String item = removeDupsSheet.Cells[r, 2].value;
+                            item.Trim();
+                            if (!exceptions.Contains(item))
+                            {
+                                nameHash.Add(item);
+                            }
+
                         }
                     }
 
@@ -114,6 +124,11 @@ namespace AttendanceReportCSharp
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void nameListAP_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
