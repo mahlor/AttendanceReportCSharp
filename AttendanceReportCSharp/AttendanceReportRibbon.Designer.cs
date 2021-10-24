@@ -35,17 +35,17 @@
         private void InitializeComponent()
         {
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.buttonRemoveDups = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.buttonOpenDoor = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.buttonRemoveDups = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.buttonOpenRoster = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.buttonCalcDays = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
-            this.group1.SuspendLayout();
             this.group2.SuspendLayout();
+            this.group1.SuspendLayout();
             this.group3.SuspendLayout();
             this.group4.SuspendLayout();
             this.SuspendLayout();
@@ -59,19 +59,6 @@
             this.tab1.Label = "Attendance Report";
             this.tab1.Name = "tab1";
             // 
-            // group1
-            // 
-            this.group1.Items.Add(this.buttonRemoveDups);
-            this.group1.Name = "group1";
-            // 
-            // buttonRemoveDups
-            // 
-            this.buttonRemoveDups.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonRemoveDups.Label = "Remove Duplicates";
-            this.buttonRemoveDups.Name = "buttonRemoveDups";
-            this.buttonRemoveDups.OfficeImageId = "ReplaceDialog";
-            this.buttonRemoveDups.ShowImage = true;
-            // 
             // group2
             // 
             this.group2.Items.Add(this.buttonOpenDoor);
@@ -84,6 +71,19 @@
             this.buttonOpenDoor.Name = "buttonOpenDoor";
             this.buttonOpenDoor.OfficeImageId = "FileOpen";
             this.buttonOpenDoor.ShowImage = true;
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.buttonRemoveDups);
+            this.group1.Name = "group1";
+            // 
+            // buttonRemoveDups
+            // 
+            this.buttonRemoveDups.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonRemoveDups.Label = "Remove Duplicates";
+            this.buttonRemoveDups.Name = "buttonRemoveDups";
+            this.buttonRemoveDups.OfficeImageId = "ReplaceDialog";
+            this.buttonRemoveDups.ShowImage = true;
             // 
             // group3
             // 
@@ -120,10 +120,10 @@
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.AttendanceReportRibbon_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
+            this.group1.ResumeLayout(false);
+            this.group1.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
             this.group4.ResumeLayout(false);

@@ -1,0 +1,3 @@
+﻿Figure out running dedup multiple times
+add user level statistics
+add load in roster file to include people who have been in 0 times.

@@ -14,6 +14,9 @@ namespace AttendanceReportCSharp
         ActionsPaneControl1 actionsPane1 = new ActionsPaneControl1();
         int numOpened = 0;
         int deDupped = 0;
+        int numDays = 0;
+        int numPerDay = 0;
+        Dictionary<DateTime, int> numPerDayDict = new Dictionary<DateTime, int> { };
         private void AttendanceReportRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             Globals.ThisWorkbook.ActionsPane.Controls.Add(actionsPane1);
@@ -108,6 +111,7 @@ namespace AttendanceReportCSharp
 
 
             DateTime dateMatch = removeDupsSheet.Cells[1, 1].Value;
+            numDays++;
             DateTime dateOrg;
             var names = new List<(DateTime dateList, string nameList)> { };
             HashSet<String> nameHash = new HashSet<string>();
@@ -116,19 +120,29 @@ namespace AttendanceReportCSharp
                 if (removeDupsSheet.Cells[r,1].Value != null)
                 {
                     dateOrg = removeDupsSheet.Cells[r, 1].Value;
-                    if (dateOrg != dateMatch)
+                    if (dateOrg.DayOfWeek != DayOfWeek.Saturday && dateOrg.DayOfWeek != DayOfWeek.Sunday)
                     {
+                        if (dateOrg != dateMatch)
+                        {
 
-                        foreach( String name in nameHash) {
-                            names.Add((dateMatch, name));
-                            
+                            foreach (String name in nameHash)
+                            {
+                                names.Add((dateMatch, name));
+
+                            }
+                            numPerDay = nameHash.Count();
+                            numPerDayDict.Add(dateMatch, numPerDay);
+
+                            dateMatch = dateOrg;
+                            numDays++;
+                            nameHash.Clear();
                         }
-                        dateMatch = dateOrg;
-                        nameHash.Clear();
+                        else
+                        {
+                            nameHash.Add(removeDupsSheet.Cells[r, 2].value);
+                        }
                     }
-                    else {
-                        nameHash.Add(removeDupsSheet.Cells[r, 2].value);
-                    }
+
                 }
             }
             for (int s = 1, t=0; t < names.Count; s++, t++)
@@ -138,6 +152,20 @@ namespace AttendanceReportCSharp
 
             }
             removeDupsSheet.Range["A1:B1"].EntireColumn.Delete();
+            removeDupsSheet.Range["E1"].Value2 = "Total Days";
+            removeDupsSheet.Range["E2"].Value2 = numDays.ToString();
+            removeDupsSheet.Range["E4"].Value2 = "Total in Each Day";
+            int cell = 5;
+            foreach (var day in numPerDayDict)
+            {
+                removeDupsSheet.Range["E" + cell].Value2 = day.Key.ToShortDateString();
+                removeDupsSheet.Range["F" + cell].Value2 = day.Value.ToString();
+                cell++;
+            }
+            removeDupsSheet.Range["H4"].Value2 = "Average Per Day";
+            removeDupsSheet.Range["H5"].Formula = "=AVERAGE(F5:F" + cell + ")";
+
+
             deDupped = 1;
 
 
