@@ -37,15 +37,12 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.buttonOpenDoor = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.buttonRemoveDups = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.buttonOpenRoster = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.buttonCalcDays = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group2.SuspendLayout();
-            this.group1.SuspendLayout();
             this.group3.SuspendLayout();
             this.group4.SuspendLayout();
             this.SuspendLayout();
@@ -53,7 +50,6 @@
             // tab1
             // 
             this.tab1.Groups.Add(this.group2);
-            this.tab1.Groups.Add(this.group1);
             this.tab1.Groups.Add(this.group3);
             this.tab1.Groups.Add(this.group4);
             this.tab1.Label = "Attendance Report";
@@ -71,19 +67,6 @@
             this.buttonOpenDoor.Name = "buttonOpenDoor";
             this.buttonOpenDoor.OfficeImageId = "FileOpen";
             this.buttonOpenDoor.ShowImage = true;
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.buttonRemoveDups);
-            this.group1.Name = "group1";
-            // 
-            // buttonRemoveDups
-            // 
-            this.buttonRemoveDups.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonRemoveDups.Label = "Remove Duplicates";
-            this.buttonRemoveDups.Name = "buttonRemoveDups";
-            this.buttonRemoveDups.OfficeImageId = "ReplaceDialog";
-            this.buttonRemoveDups.ShowImage = true;
             // 
             // group3
             // 
@@ -122,8 +105,6 @@
             this.tab1.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
             this.group4.ResumeLayout(false);
@@ -135,8 +116,6 @@
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonRemoveDups;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonOpenDoor;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;

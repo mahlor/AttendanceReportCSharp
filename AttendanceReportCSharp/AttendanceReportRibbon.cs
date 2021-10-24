@@ -11,22 +11,19 @@ namespace AttendanceReportCSharp
 {
     public partial class AttendanceReportRibbon
     {
-        ActionsPaneControl1 actionsPane1 = new ActionsPaneControl1();
+
         int numOpened = 0;
-        int deDupped = 0;
-        int numDays = 0;
-        int numPerDay = 0;
-        Dictionary<DateTime, int> numPerDayDict = new Dictionary<DateTime, int> { };
         private void AttendanceReportRibbon_Load(object sender, RibbonUIEventArgs e)
         {
+
+            ActionsPaneControl1 actionsPane1 = new ActionsPaneControl1();
             Globals.ThisWorkbook.ActionsPane.Controls.Add(actionsPane1);
-            actionsPane1.Hide();
             Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = false;
 
             this.buttonOpenDoor.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
                 this.buttonOpenDoor_Click);
-            this.buttonRemoveDups.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
-                this.buttonRemoveDups_Click);
+         //   this.buttonRemoveDups.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
+           //     this.buttonRemoveDups_Click);
             this.buttonOpenRoster.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
                 this.buttonOpenRoster_Click);
             this.buttonCalcDays.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
@@ -35,8 +32,8 @@ namespace AttendanceReportCSharp
         }
         private void buttonCalcDays_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = true;
-            actionsPane1.Show();
+          //  Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = true;
+            //actionsPane1.Show();
 
         }
 
@@ -68,7 +65,6 @@ namespace AttendanceReportCSharp
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                numOpened++;
                 //Excel.Worksheet currentWS = (Excel.Worksheet)Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet;
 
                 Excel.Workbook doorWB = Globals.ThisWorkbook.Application.Workbooks.Open(openFileDialog1.FileName, true, true);
@@ -76,99 +72,19 @@ namespace AttendanceReportCSharp
 
                 doorSheet1.Copy(Globals.ThisWorkbook.Worksheets[1]);
                 doorWB.Close(false);
+
+                Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
+                newDoorSheet.Name = "Door Report" + numOpened.ToString();
+                numOpened++;
+                Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = true;
+
+
             }
         }
         private void buttonRemoveDups_Click(object sender, RibbonControlEventArgs e)
         {
-            if (deDupped == 1) return;
-            Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
-            newDoorSheet.Name = "Door Report" + numOpened.ToString();
-            newDoorSheet.Copy(Globals.ThisWorkbook.Worksheets[1]);
-            Excel.Worksheet removeDupsSheet = Globals.ThisWorkbook.Worksheets[1];
-            removeDupsSheet.Name = "Remove Dups" + numOpened.ToString();
-            removeDupsSheet.Range["A1:A6"].EntireRow.Delete();
-            removeDupsSheet.Range["A1"].EntireColumn.Delete();
-            removeDupsSheet.Range["B1:F1"].EntireColumn.Delete();
-            removeDupsSheet.Range["C1:G1"].EntireColumn.Delete();
-            Excel.Range lastRow = removeDupsSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
-            int lastUsedRow = lastRow.Row;
-            for (int r = 1; r < lastUsedRow - 1; r++)
-            {
-                String name = removeDupsSheet.Cells[r, 2].Value;
-                String dateStr = removeDupsSheet.Cells[r, 1].Value;
-                if (name != null)
-                {
-                    name = name.ToLower();
-                }
-                if (dateStr != null)
-                {
-                    dateStr = dateStr.Split(' ')[0];
-                }
-                removeDupsSheet.Range["C" + r].Value2 = dateStr;
-                removeDupsSheet.Range["D" + r].Value2 = name;
-            }
-            removeDupsSheet.Range["A1:B1"].EntireColumn.Delete();
-
-
-            DateTime dateMatch = removeDupsSheet.Cells[1, 1].Value;
-            numDays++;
-            DateTime dateOrg;
-            var names = new List<(DateTime dateList, string nameList)> { };
-            HashSet<String> nameHash = new HashSet<string>();
-            for (int r = 1; r < lastUsedRow - 1; r++)
-            {
-                if (removeDupsSheet.Cells[r,1].Value != null)
-                {
-                    dateOrg = removeDupsSheet.Cells[r, 1].Value;
-                    if (dateOrg.DayOfWeek != DayOfWeek.Saturday && dateOrg.DayOfWeek != DayOfWeek.Sunday)
-                    {
-                        if (dateOrg != dateMatch)
-                        {
-
-                            foreach (String name in nameHash)
-                            {
-                                names.Add((dateMatch, name));
-
-                            }
-                            numPerDay = nameHash.Count();
-                            numPerDayDict.Add(dateMatch, numPerDay);
-
-                            dateMatch = dateOrg;
-                            numDays++;
-                            nameHash.Clear();
-                        }
-                        else
-                        {
-                            nameHash.Add(removeDupsSheet.Cells[r, 2].value);
-                        }
-                    }
-
-                }
-            }
-            for (int s = 1, t=0; t < names.Count; s++, t++)
-            {
-                removeDupsSheet.Range["C" + s].Value = names[t].dateList;
-                removeDupsSheet.Range["D" + s].Value = names[t].nameList;
-
-            }
-            removeDupsSheet.Range["A1:B1"].EntireColumn.Delete();
-            removeDupsSheet.Range["E1"].Value2 = "Total Days";
-            removeDupsSheet.Range["E2"].Value2 = numDays.ToString();
-            removeDupsSheet.Range["E4"].Value2 = "Total in Each Day";
-            int cell = 5;
-            foreach (var day in numPerDayDict)
-            {
-                removeDupsSheet.Range["E" + cell].Value2 = day.Key.ToShortDateString();
-                removeDupsSheet.Range["F" + cell].Value2 = day.Value.ToString();
-                cell++;
-            }
-            removeDupsSheet.Range["H4"].Value2 = "Average Per Day";
-            removeDupsSheet.Range["H5"].Formula = "=AVERAGE(F5:F" + cell + ")";
-
-
-            deDupped = 1;
-
-
+     //       Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = true;
+       //     actionsPane1.Show();
         }
         
         private void button3_Click(object sender, RibbonControlEventArgs e)
