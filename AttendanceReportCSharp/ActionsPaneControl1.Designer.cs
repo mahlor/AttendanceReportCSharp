@@ -39,7 +39,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 25);
+            this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 0;
             // 
             // nameListAP
@@ -47,7 +47,7 @@
             this.nameListAP.FormattingEnabled = true;
             this.nameListAP.Location = new System.Drawing.Point(3, 213);
             this.nameListAP.Name = "nameListAP";
-            this.nameListAP.Size = new System.Drawing.Size(591, 648);
+            this.nameListAP.Size = new System.Drawing.Size(591, 634);
             this.nameListAP.TabIndex = 1;
             this.nameListAP.SelectedIndexChanged += new System.EventHandler(this.nameListAP_SelectedIndexChanged);
             // 
@@ -55,7 +55,7 @@
             // 
             this.removeDupsAPButton.Location = new System.Drawing.Point(9, 10);
             this.removeDupsAPButton.Name = "removeDupsAPButton";
-            this.removeDupsAPButton.Size = new System.Drawing.Size(581, 83);
+            this.removeDupsAPButton.Size = new System.Drawing.Size(221, 83);
             this.removeDupsAPButton.TabIndex = 2;
             this.removeDupsAPButton.Text = "Remove Duplicates";
             this.removeDupsAPButton.UseVisualStyleBackColor = true;
@@ -66,7 +66,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(37, 175);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(493, 25);
+            this.label2.Size = new System.Drawing.Size(242, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Check any names you wish to remove from results";
             this.label2.Click += new System.EventHandler(this.label2_Click);

@@ -13,6 +13,7 @@ namespace AttendanceReportCSharp
         int numPerDay = 0;
         int numOpened = 0;
         Dictionary<DateTime, int> numPerDayDict = new Dictionary<DateTime, int> { };
+        Dictionary<String, int> numPerNameDict = new Dictionary<String, int> { };
 
         public ActionsPaneControl1()
         {
@@ -78,14 +79,28 @@ namespace AttendanceReportCSharp
                             foreach (String name in nameHash)
                             {
                                 names.Add((dateMatch, name));
+                                if (numPerNameDict.ContainsKey(name))
+                                {
+                                    numPerNameDict[name] = numPerNameDict[name] + 1;
+                                } 
+                                else
+                                {
+                                    numPerNameDict.Add(name, 1);
+                                }
 
                             }
                             numPerDay = nameHash.Count;
                             numPerDayDict.Add(dateMatch, numPerDay);
-
                             dateMatch = dateOrg;
                             numDays++;
                             nameHash.Clear();
+                            String item = removeDupsSheet.Cells[r, 2].value;
+                            item.Trim();
+                            if (!exceptions.Contains(item))
+                            {
+                                nameHash.Add(item);
+                            }
+
                         }
                         else
                         {
@@ -108,19 +123,35 @@ namespace AttendanceReportCSharp
 
             }
             removeDupsSheet.Range["A1:B1"].EntireColumn.Delete();
-            removeDupsSheet.Range["E1"].Value2 = "Total Days";
-            removeDupsSheet.Range["E2"].Value2 = numDays.ToString();
-            removeDupsSheet.Range["E4"].Value2 = "Total in Each Day";
-            int cell = 5;
+
+            int cell = 9;
             foreach (var day in numPerDayDict)
             {
                 removeDupsSheet.Range["E" + cell].Value2 = day.Key.ToShortDateString();
                 removeDupsSheet.Range["F" + cell].Value2 = day.Value.ToString();
                 cell++;
             }
+            removeDupsSheet.Range["E1"].Value2 = "Total Days";
+            removeDupsSheet.Range["E2"].Value2 = numDays.ToString();
+            removeDupsSheet.Range["E4"].Value2 = "Average Per Day";
+            removeDupsSheet.Range["E5"].Formula = "=AVERAGE(F9:F" + (cell - 1) + ")";
+            removeDupsSheet.Range["E7"].Value2 = "Total in Each Day";
+
+            cell = 5;
+
+            foreach (var name in numPerNameDict)
+            {
+                removeDupsSheet.Range["H" + cell].Value2 = name.Key;
+                removeDupsSheet.Range["I" + cell].Value2 = name.Value.ToString();
+                cell++;
+            }
+
             numPerDayDict.Clear();
-            removeDupsSheet.Range["H4"].Value2 = "Average Per Day";
-            removeDupsSheet.Range["H5"].Formula = "=AVERAGE(F5:F" + cell + ")";
+            numPerNameDict.Clear();
+            removeDupsSheet.Range["H:I"].Sort(removeDupsSheet.Columns[9]);
+            removeDupsSheet.Range["A1:M1"].EntireColumn.AutoFit();
+
+            Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = false;
         }
 
         private void label2_Click(object sender, EventArgs e)
