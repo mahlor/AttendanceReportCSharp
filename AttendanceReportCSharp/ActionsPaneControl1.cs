@@ -13,8 +13,10 @@ namespace AttendanceReportCSharp
         int numPerDay = 0;
         int numOpened = 0;
         Dictionary<DateTime, int> numPerDayDict = new Dictionary<DateTime, int> { };
-        Dictionary<String, int> numPerNameDict = new Dictionary<String, int> { };
+        public Dictionary<String, int> numPerNameDict = new Dictionary<String, int> { };
+        Excel.Worksheet removeDupsSheet = new Excel.Worksheet();
 
+       
         public ActionsPaneControl1()
         {
             InitializeComponent();
@@ -22,6 +24,7 @@ namespace AttendanceReportCSharp
 
         private void removeDupsAPButton_Click(object sender, EventArgs e)
         {
+            numPerNameDict.Clear();
             Excel.Worksheet activesheet = Globals.ThisWorkbook.Application.ActiveSheet;
             if (activesheet.Name.StartsWith("Remove")) return;
 
@@ -35,7 +38,7 @@ namespace AttendanceReportCSharp
             Excel.Worksheet newDoorSheet = Globals.ThisWorkbook.Worksheets[1];
             newDoorSheet.Copy(Globals.ThisWorkbook.Worksheets[1]);
 
-            Excel.Worksheet removeDupsSheet = Globals.ThisWorkbook.Worksheets[1];
+            removeDupsSheet = Globals.ThisWorkbook.Worksheets[1];
             removeDupsSheet.Name = "Remove Dups" + numOpened.ToString();
             numOpened++;
             removeDupsSheet.Range["A1:A6"].EntireRow.Delete();
@@ -147,11 +150,13 @@ namespace AttendanceReportCSharp
             }
 
             numPerDayDict.Clear();
-            numPerNameDict.Clear();
+
             removeDupsSheet.Range["H:I"].Sort(removeDupsSheet.Columns[9]);
             removeDupsSheet.Range["A1:M1"].EntireColumn.AutoFit();
 
             Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = false;
+            //            this.buttonOpenRoster.Enabled = true;
+            Globals.Ribbons.AttendanceReportRibbon.buttonOpenRoster.Enabled = true;
         }
 
         private void label2_Click(object sender, EventArgs e)
