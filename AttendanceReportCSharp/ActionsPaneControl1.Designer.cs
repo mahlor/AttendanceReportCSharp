@@ -49,7 +49,6 @@
             this.nameListAP.Name = "nameListAP";
             this.nameListAP.Size = new System.Drawing.Size(591, 634);
             this.nameListAP.TabIndex = 1;
-            this.nameListAP.SelectedIndexChanged += new System.EventHandler(this.nameListAP_SelectedIndexChanged);
             // 
             // removeDupsAPButton
             // 
@@ -69,7 +68,6 @@
             this.label2.Size = new System.Drawing.Size(242, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Check any names you wish to remove from results";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // ActionsPaneControl1
             // 

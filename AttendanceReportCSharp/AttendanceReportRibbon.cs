@@ -17,29 +17,16 @@ namespace AttendanceReportCSharp
         ActionsPaneControl1 actionsPane1 = new ActionsPaneControl1();
         private void AttendanceReportRibbon_Load(object sender, RibbonUIEventArgs e)
         {
-
-
             Globals.ThisWorkbook.ActionsPane.Controls.Add(actionsPane1);
             Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = false;
 
             this.buttonOpenDoor.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
                 this.buttonOpenDoor_Click);
-         //   this.buttonRemoveDups.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
-           //     this.buttonRemoveDups_Click);
             this.buttonOpenRoster.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
                 this.buttonOpenRoster_Click);
             this.buttonOpenRoster.Enabled = false;
-            //            this.buttonCalcDays.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(
-            //              this.buttonCalcDays_Click);
 
         }
-        /*        private void buttonCalcDays_Click(object sender, RibbonControlEventArgs e)
-                {
-                    //  Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = true;
-                    //actionsPane1.Show();
-                }
-        */
-
         private void buttonOpenRoster_Click(object sender, RibbonControlEventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
@@ -115,7 +102,6 @@ namespace AttendanceReportCSharp
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                //Excel.Worksheet currentWS = (Excel.Worksheet)Globals.ThisWorkbook.Application.ActiveWorkbook.ActiveSheet;
                 CheckedListBox listbox = (CheckedListBox)actionsPane1.Controls["nameListAP"];
                 listbox.Items.Clear();
                 Excel.Workbook doorWB = Globals.ThisWorkbook.Application.Workbooks.Open(openFileDialog1.FileName, true, true);
@@ -153,25 +139,7 @@ namespace AttendanceReportCSharp
                 nameHash.Clear();
 
                 Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = true;
-
-
-
             }
-        }
-        private void buttonRemoveDups_Click(object sender, RibbonControlEventArgs e)
-        {
-     //       Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = true;
-       //     actionsPane1.Show();
-        }
-        
-        private void button3_Click(object sender, RibbonControlEventArgs e)
-        {
-
-        }
-
-        private void buttonOpenDoor_Click_1(object sender, RibbonControlEventArgs e)
-        {
-
         }
     }
 }

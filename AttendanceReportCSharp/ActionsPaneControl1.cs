@@ -158,15 +158,5 @@ namespace AttendanceReportCSharp
             //            this.buttonOpenRoster.Enabled = true;
             Globals.Ribbons.AttendanceReportRibbon.buttonOpenRoster.Enabled = true;
         }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void nameListAP_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

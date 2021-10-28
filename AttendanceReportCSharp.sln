@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceReportCSharp", "AttendanceReportCSharp\AttendanceReportCSharp.csproj", "{2BB3034A-3E67-446A-AA48-70F32CD0CF0C}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AttendanceReportAddin", "AttendanceReportXLS\AttendanceReportXLS.vdproj", "{6BA047A8-D7CE-44E5-AEF1-FB6384C9F72E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddCustomizationCustomAction", "AddCustomizationCustomAction\AddCustomizationCustomAction.csproj", "{D0FA41FE-B77E-43A4-BD5B-67784579B19A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,12 @@ Global
 		{2BB3034A-3E67-446A-AA48-70F32CD0CF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BB3034A-3E67-446A-AA48-70F32CD0CF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BB3034A-3E67-446A-AA48-70F32CD0CF0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA047A8-D7CE-44E5-AEF1-FB6384C9F72E}.Debug|Any CPU.ActiveCfg = Debug
+		{6BA047A8-D7CE-44E5-AEF1-FB6384C9F72E}.Release|Any CPU.ActiveCfg = Release
+		{D0FA41FE-B77E-43A4-BD5B-67784579B19A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0FA41FE-B77E-43A4-BD5B-67784579B19A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0FA41FE-B77E-43A4-BD5B-67784579B19A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0FA41FE-B77E-43A4-BD5B-67784579B19A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

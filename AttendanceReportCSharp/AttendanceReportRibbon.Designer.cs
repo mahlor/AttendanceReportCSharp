@@ -36,10 +36,10 @@
         {
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.group3 = this.Factory.CreateRibbonGroup();
-            this.group4 = this.Factory.CreateRibbonGroup();
             this.buttonOpenDoor = this.Factory.CreateRibbonButton();
+            this.group3 = this.Factory.CreateRibbonGroup();
             this.buttonOpenRoster = this.Factory.CreateRibbonButton();
+            this.group4 = this.Factory.CreateRibbonGroup();
             this.tab1.SuspendLayout();
             this.group2.SuspendLayout();
             this.group3.SuspendLayout();
@@ -58,15 +58,6 @@
             this.group2.Items.Add(this.buttonOpenDoor);
             this.group2.Name = "group2";
             // 
-            // group3
-            // 
-            this.group3.Items.Add(this.buttonOpenRoster);
-            this.group3.Name = "group3";
-            // 
-            // group4
-            // 
-            this.group4.Name = "group4";
-            // 
             // buttonOpenDoor
             // 
             this.buttonOpenDoor.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -74,7 +65,11 @@
             this.buttonOpenDoor.Name = "buttonOpenDoor";
             this.buttonOpenDoor.OfficeImageId = "FileOpen";
             this.buttonOpenDoor.ShowImage = true;
-            this.buttonOpenDoor.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonOpenDoor_Click_1);
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.buttonOpenRoster);
+            this.group3.Name = "group3";
             // 
             // buttonOpenRoster
             // 
@@ -83,7 +78,10 @@
             this.buttonOpenRoster.Name = "buttonOpenRoster";
             this.buttonOpenRoster.OfficeImageId = "FileOpen";
             this.buttonOpenRoster.ShowImage = true;
-            this.buttonOpenRoster.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button3_Click);
+            // 
+            // group4
+            // 
+            this.group4.Name = "group4";
             // 
             // AttendanceReportRibbon
             // 
