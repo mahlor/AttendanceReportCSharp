@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
 using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Tools.Excel;
 
 namespace AttendanceReportCSharp
 {
@@ -155,7 +156,10 @@ namespace AttendanceReportCSharp
             removeDupsSheet.Range["k3"].Value2 = "Greater than 70% of time in-studio";
             removeDupsSheet.Range["k3"].Font.Bold = true;
             removeDupsSheet.Range["l3"].Formula = "=COUNTIF(I:I, \">=" + .7 * numDays + "\")";
-
+            Excel.Range chartCells = removeDupsSheet.Range["K1:K3", "L1:L3"];
+            var chart = removeDupsSheet.Shapes.AddChart2(-1, Microsoft.Office.Interop.Excel.XlChartType.xlPie, 500);
+            chart.Chart.SetSourceData(chartCells);
+            chart.Chart.ChartTitle.Text = "% Time In Studio";
             cell = 5;
 
             foreach (var name in numPerNameDict)
