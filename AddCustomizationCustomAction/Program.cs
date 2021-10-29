@@ -24,6 +24,7 @@ namespace AddCustomizationCustomAction
             Guid solutionID = Context.Parameters.ContainsKey("solutionID") ? new Guid(Context.Parameters["solutionID"]) : new Guid();
 
             string newDocLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.GetFileName(documentLocation));
+            LogMessage("newdoclocation = " + newDocLocation);
 
             try
             {

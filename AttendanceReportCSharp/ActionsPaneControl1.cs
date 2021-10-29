@@ -20,11 +20,15 @@ namespace AttendanceReportCSharp
         public ActionsPaneControl1()
         {
             InitializeComponent();
+            this.AutoScaleMode = AutoScaleMode.Dpi;
         }
 
         private void removeDupsAPButton_Click(object sender, EventArgs e)
         {
             numPerNameDict.Clear();
+            numPerDayDict.Clear();
+            numDays = 0;
+
             Excel.Worksheet activesheet = Globals.ThisWorkbook.Application.ActiveSheet;
             if (activesheet.Name.StartsWith("Remove")) return;
 
@@ -135,10 +139,22 @@ namespace AttendanceReportCSharp
                 cell++;
             }
             removeDupsSheet.Range["E1"].Value2 = "Total Days";
+            removeDupsSheet.Range["E1"].Font.Bold = true;
             removeDupsSheet.Range["E2"].Value2 = numDays.ToString();
             removeDupsSheet.Range["E4"].Value2 = "Average Per Day";
+            removeDupsSheet.Range["E4"].Font.Bold = true;
             removeDupsSheet.Range["E5"].Formula = "=AVERAGE(F9:F" + (cell - 1) + ")";
             removeDupsSheet.Range["E7"].Value2 = "Total in Each Day";
+            removeDupsSheet.Range["E7"].Font.Bold = true;
+            removeDupsSheet.Range["k1"].Value2 = "Less than 10% of time in-studio";
+            removeDupsSheet.Range["k1"].Font.Bold = true;
+            removeDupsSheet.Range["l1"].Formula = "=COUNTIF(I:I, \"<" + .1 * numDays + "\")";
+            removeDupsSheet.Range["k2"].Value2 = "Between 10% and 70% of time in-studio";
+            removeDupsSheet.Range["k2"].Font.Bold = true;
+            removeDupsSheet.Range["l2"].Formula = "=COUNTIFS(I:I, \">" + .1 * numDays + "\", I:I, \"<" + .69 * numDays + "\")";
+            removeDupsSheet.Range["k3"].Value2 = "Greater than 70% of time in-studio";
+            removeDupsSheet.Range["k3"].Font.Bold = true;
+            removeDupsSheet.Range["l3"].Formula = "=COUNTIF(I:I, \">=" + .7 * numDays + "\")";
 
             cell = 5;
 
@@ -149,14 +165,18 @@ namespace AttendanceReportCSharp
                 cell++;
             }
 
-            numPerDayDict.Clear();
-
             removeDupsSheet.Range["H:I"].Sort(removeDupsSheet.Columns[9]);
             removeDupsSheet.Range["A1:M1"].EntireColumn.AutoFit();
 
+            
             Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = false;
             //            this.buttonOpenRoster.Enabled = true;
             Globals.Ribbons.AttendanceReportRibbon.buttonOpenRoster.Enabled = true;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -73,16 +73,14 @@ namespace AttendanceReportCSharp
                         {
                             newRosterSheet.Cells[r, 2] = 0;
                         }
-
                     }
                 }
-
+                newRosterSheet.Range["A:B"].Sort(newRosterSheet.Columns[2]);
+                newRosterSheet.Range["A:M"].EntireColumn.AutoFit();
 
 
 
             }
-
-
         }
             private void buttonOpenDoor_Click(object sender, RibbonControlEventArgs e)
         {
@@ -132,7 +130,6 @@ namespace AttendanceReportCSharp
                 nameList.Sort();
                 foreach (var item in nameList)
                 {
-
                     listbox.Items.Add(item);
                 }
 
