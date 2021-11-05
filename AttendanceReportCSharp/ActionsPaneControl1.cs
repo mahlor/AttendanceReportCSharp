@@ -182,5 +182,14 @@ namespace AttendanceReportCSharp
         {
 
         }
+
+        private void selectall_CheckedChanged(object sender, EventArgs e)
+        {
+            bool state = Convert.ToBoolean(checkboxSelectAll.CheckState);
+            for(var i = 0; i < nameListAP.Items.Count; i++)
+            {
+                nameListAP.SetItemCheckState(i, (state ? CheckState.Checked : CheckState.Unchecked));
+            }
+        }
     }
 }
