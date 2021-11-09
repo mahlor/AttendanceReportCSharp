@@ -7,6 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using System.Windows.Forms;
 
+
 namespace AttendanceReportCSharp
 {
     public partial class AttendanceReportRibbon
@@ -76,7 +77,32 @@ namespace AttendanceReportCSharp
                     }
                 }
                 newRosterSheet.Range["A:B"].Sort(newRosterSheet.Columns[2]);
+
+                int numDays = actionsPane1.Numdays;
+                newRosterSheet.Range["E1"].Value2 = "Total Days";
+                newRosterSheet.Range["E1"].Font.Bold = true;
+                newRosterSheet.Range["E2"].Value2 = numDays.ToString();
+                newRosterSheet.Range["E4"].Value2 = "Average Days in Studio";
+                newRosterSheet.Range["E4"].Font.Bold = true;
+                newRosterSheet.Range["E5"].Formula = "=AVERAGE(B1:B" + lastUsedRow + ")";
+                newRosterSheet.Range["k1"].Value2 = "Less than 10% of time in-studio";
+                newRosterSheet.Range["k1"].Font.Bold = true;
+                newRosterSheet.Range["l1"].Formula = "=COUNTIF(B:B, \"<" + .1 * numDays + "\")";
+                newRosterSheet.Range["k2"].Value2 = "Between 10% and 70% of time in-studio";
+                newRosterSheet.Range["k2"].Font.Bold = true;
+                newRosterSheet.Range["l2"].Formula = "=COUNTIFS(B:B, \">" + .1 * numDays + "\", B:B, \"<" + .69 * numDays + "\")";
+                newRosterSheet.Range["k3"].Value2 = "Greater than 70% of time in-studio";
+                newRosterSheet.Range["k3"].Font.Bold = true;
+                newRosterSheet.Range["l3"].Formula = "=COUNTIF(B:B, \">=" + .7 * numDays + "\")";
+                Excel.Range chartCells = newRosterSheet.Range["K1:K3", "L1:L3"];
+                Excel.Range location = newRosterSheet.Range["E9"];
+                location.Select();
+                var chart = newRosterSheet.Shapes.AddChart2(-1, Microsoft.Office.Interop.Excel.XlChartType.xlPie, 300);
+                chart.Chart.SetSourceData(chartCells);
+                chart.Chart.ChartTitle.Text = "% Time In Studio";
+                
                 newRosterSheet.Range["A:M"].EntireColumn.AutoFit();
+
 
 
 

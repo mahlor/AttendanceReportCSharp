@@ -10,14 +10,19 @@ namespace AttendanceReportCSharp
 {
     partial class ActionsPaneControl1 : UserControl
     {
-        int numDays = 0;
+        private int numDays;
+        public int Numdays {
+            get { return numDays; }
+            set { numDays = value; }
+        }
+
         int numPerDay = 0;
         int numOpened = 0;
         Dictionary<DateTime, int> numPerDayDict = new Dictionary<DateTime, int> { };
         public Dictionary<String, int> numPerNameDict = new Dictionary<String, int> { };
         Excel.Worksheet removeDupsSheet = new Excel.Worksheet();
 
-       
+
         public ActionsPaneControl1()
         {
             InitializeComponent();
@@ -156,10 +161,6 @@ namespace AttendanceReportCSharp
             removeDupsSheet.Range["k3"].Value2 = "Greater than 70% of time in-studio";
             removeDupsSheet.Range["k3"].Font.Bold = true;
             removeDupsSheet.Range["l3"].Formula = "=COUNTIF(I:I, \">=" + .7 * numDays + "\")";
-            Excel.Range chartCells = removeDupsSheet.Range["K1:K3", "L1:L3"];
-            var chart = removeDupsSheet.Shapes.AddChart2(-1, Microsoft.Office.Interop.Excel.XlChartType.xlPie, 500);
-            chart.Chart.SetSourceData(chartCells);
-            chart.Chart.ChartTitle.Text = "% Time In Studio";
             cell = 5;
 
             foreach (var name in numPerNameDict)
@@ -174,7 +175,6 @@ namespace AttendanceReportCSharp
 
             
             Globals.ThisWorkbook.Application.DisplayDocumentActionTaskPane = false;
-            //            this.buttonOpenRoster.Enabled = true;
             Globals.Ribbons.AttendanceReportRibbon.buttonOpenRoster.Enabled = true;
         }
 
